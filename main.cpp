@@ -12,28 +12,6 @@
 
 //declarations
 
-class Snek
-{
-private:
-    int segNum;
-    const bool snkHeadColor = true, snkBodyColor = false;
-    sf::Vector2f beginPos;
-    
-public://vars
-    std::vector<sf::RectangleShape> snekSegs;
-    std::vector<sf::Vector2f> snekSegLoc;
-    
-public:// functions
-    Snek(sf::RenderWindow *snWin, sf::Vector2f innitLoc);
-    ~Snek();
-    void moveSnek(sf::Vector2f dirvec);
-    
-private:
-    void innitSnek();
-    void drawBody();
-    void growSnek();
-};
-
 class Grfx
 {
 private:
@@ -53,6 +31,31 @@ class RandomEngine
     ~RandomEngine();
 };
 
+class Snek
+{
+private:
+    int segNum;
+    const bool snkHeadColor = true, snkBodyColor = false;
+    sf::Vector2f beginPos;
+    Grfx grz;
+    
+public://vars
+    std::vector<sf::RectangleShape> snekSegs;
+    std::vector<sf::Vector2f> snekSegLoc;
+    
+public:// functions
+    Snek(sf::RenderWindow *snWin, sf::Vector2f innitLoc);
+    ~Snek();
+    void moveSnek(sf::Vector2f dirvec);
+    
+private:
+    sf::RenderWindow* xsnWin;
+    void innitSnek();
+    void drawBody();
+    void growSnek();
+};
+
+
 //=================================================================================
 //class implementations go here...
 Grfx::Grfx() : pixSize({20,20})
@@ -71,12 +74,36 @@ sf::RectangleShape Grfx::getRectAt(sf::Vector2f Loc, bool snColor)
     return pixBox;
 }
 
+//constructor of snek class
+Snek::Snek(sf::RenderWindow *snWin, sf::Vector2f innitLoc) 
+    :beginPos(innitLoc), segNum(4)
+{
+    
+}
+Snek::~Snek() //destructor of snek class
+{
+    
+}
+void Snek::innitSnek()
+{
+    for(int i=0; i<segNum; i++)// populate location vector
+    {
+        
+    }
+    
+    for(int i=0; i<segNum; i++)// populate rectangle shape vector
+    {
+        
+    }
+}
+
 //=================================================================================
 
 void gameLoop(sf::RenderWindow* buff);
 
 //implementations
 
+//Entry point..
 int main(int argc, char **argv) {
     
     sf::RenderWindow xWin(sf::VideoMode({400,400}), "SNek Game", sf::Style::Close);
@@ -86,6 +113,7 @@ int main(int argc, char **argv) {
     return 0;
 }
 
+//gameloop finction
 void gameLoop(sf::RenderWindow* buff)
 {
     Grfx grx;
