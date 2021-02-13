@@ -12,6 +12,13 @@
 
 //declarations
 
+struct VectCalc //a container to hold vector calculation functions
+{
+    static sf::Vector2f translateVector(sf::Vector2f a, sf::Vector2f b);
+    static sf::Vector2f rotateVector(sf::Vector2f a, int xtheta);
+    static sf::Vector2f dotProduct(sf::Vector2f a, sf::Vector2f b);
+};
+
 class Grfx
 {
 private:
@@ -58,6 +65,22 @@ private:
 
 //=================================================================================
 //class implementations go here...
+sf::Vector2f VectCalc::translateVector(sf::Vector2f a, sf::Vector2f b)
+{
+    //placeholder
+    return sf::Vector2f();
+}
+sf::Vector2f VectCalc::rotateVector(sf::Vector2f a, int xtheta)
+{
+    //placeholder
+    return sf::Vector2f();
+}
+sf::Vector2f VectCalc::dotProduct(sf::Vector2f a, sf::Vector2f b)
+{
+    //placeholder
+    return sf::Vector2f();
+}
+
 Grfx::Grfx() : pixSize({20,20})
 {
     pixBox.setSize(pixSize);
@@ -121,7 +144,7 @@ void gameLoop(sf::RenderWindow* buff)
     {
         sf::Event evnts;
         buff->clear();
-        while(buff->pollEvent(evnts))
+        while(buff->pollEvent(evnts)) 
         {
             if( evnts.type == sf::Event::Closed ) buff->close();
         }
