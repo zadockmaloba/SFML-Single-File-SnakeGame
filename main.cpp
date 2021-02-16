@@ -67,8 +67,8 @@ private:
 //class implementations go here...
 sf::Vector2f VectCalc::translateVector(sf::Vector2f a, sf::Vector2f b)
 {
-    //placeholder
-    return sf::Vector2f();
+    a = { a.x + b.x, a.y + b.y};
+    return a;
 }
 sf::Vector2f VectCalc::rotateVector(sf::Vector2f a, int xtheta)
 {
@@ -140,6 +140,7 @@ int main(int argc, char **argv) {
 void gameLoop(sf::RenderWindow* buff)
 {
     Grfx grx;
+    //std::cout<<VectCalc::translateVector({2,3},{4,1}).x; test code...
     while(buff->isOpen())
     {
         sf::Event evnts;
