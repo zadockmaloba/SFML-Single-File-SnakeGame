@@ -77,8 +77,8 @@ sf::Vector2f VectCalc::rotateVector(sf::Vector2f a, int xtheta)
 }
 sf::Vector2f VectCalc::dotProduct(sf::Vector2f a, sf::Vector2f b)
 {
-    //placeholder
-    return sf::Vector2f();
+    a = { a.x * b.x, a.y * b.y};
+    return a;
 }
 
 Grfx::Grfx() : pixSize({20,20})
