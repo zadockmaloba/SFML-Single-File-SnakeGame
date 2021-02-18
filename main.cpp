@@ -17,6 +17,7 @@ struct VectCalc //a container to hold vector calculation functions
     static sf::Vector2f translateVector(sf::Vector2f a, sf::Vector2f b);
     static sf::Vector2f rotateVector(sf::Vector2f a, int xtheta);
     static sf::Vector2f dotProduct(sf::Vector2f a, sf::Vector2f b);
+    static sf::Vector2f scalarProduct(sf::Vector2f a, int scal);
 };
 
 class Grfx
@@ -30,6 +31,7 @@ public:// functions
     Grfx();
     ~Grfx();
     sf::RectangleShape getRectAt(sf::Vector2f Loc, bool snColor);
+    sf::Vector2f getPixSize();
 };
 
 class RandomEngine
@@ -80,6 +82,11 @@ sf::Vector2f VectCalc::dotProduct(sf::Vector2f a, sf::Vector2f b)
     a = { a.x * b.x, a.y * b.y};
     return a;
 }
+sf::Vector2f VectCalc::scalarProduct(sf::Vector2f a, int scal)
+{
+    a = {a.x * scal, a.y * scal};
+    return a;
+}
 
 Grfx::Grfx() : pixSize({20,20})
 {
@@ -97,11 +104,16 @@ sf::RectangleShape Grfx::getRectAt(sf::Vector2f Loc, bool snColor)
     return pixBox;
 }
 
+sf::Vector2f Grfx::getPixSize()
+{
+    return pixSize;
+}
+
 //constructor of snek class
 Snek::Snek(sf::RenderWindow *snWin, sf::Vector2f innitLoc) 
-    :beginPos(innitLoc), segNum(4)
+    :xsnWin(snWin),beginPos(innitLoc), segNum(4)
 {
-    
+    this->innitSnek();
 }
 Snek::~Snek() //destructor of snek class
 {
@@ -109,14 +121,24 @@ Snek::~Snek() //destructor of snek class
 }
 void Snek::innitSnek()
 {
+    //snekSegLoc.push_back(beginPos);
     for(int i=0; i<segNum; i++)// populate location vector
     {
-        
+        snekSegLoc.push_back(VectCalc::dotProduct(beginPos, {(float)i, 0}));
     }
     
-    for(int i=0; i<segNum; i++)// populate rectangle shape vector
+    for(int i=0; i<snekSegLoc.size(); i++)// populate rectangle shape vector
     {
-        
+        snekSegs.push_back(grz.getRectAt(snekSegLoc[i], 1));
+    }
+    drawBody();
+}
+
+void Snek::drawBody()
+{
+    for(int i=0; i<snekSegs.size(); i++)
+    {
+        xsnWin->draw(snekSegs[i]);
     }
 }
 
@@ -149,7 +171,8 @@ void gameLoop(sf::RenderWindow* buff)
         {
             if( evnts.type == sf::Event::Closed ) buff->close();
         }
-        buff->draw(grx.getRectAt({20,20}, 1));
+        //buff->draw(grx.getRectAt({20,20}, 1)); test code
+        Snek snk(buff, {80,80});
         buff->display();
         //std::cout<<sf::err()<<std::endl;
     }
