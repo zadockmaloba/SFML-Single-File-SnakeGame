@@ -124,7 +124,7 @@ void Snek::innitSnek()
     //snekSegLoc.push_back(beginPos);
     for(int i=0; i<segNum; i++)// populate location vector
     {
-        snekSegLoc.push_back(VectCalc::dotProduct(beginPos, {(float)i, 0}));
+        snekSegLoc.push_back(VectCalc::translateVector(beginPos, VectCalc::dotProduct(this->grz.getPixSize(), {(float)i, 0})));
     }
     
     for(int i=0; i<snekSegLoc.size(); i++)// populate rectangle shape vector
