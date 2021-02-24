@@ -142,6 +142,17 @@ void Snek::drawBody()
     }
 }
 
+void Snek::moveSnek(sf::Vector2f dirvec)
+{
+    for(int i=0; i<snekSegLoc.size(); i++)
+    {
+        snekSegLoc[i] = VectCalc::translateVector(snekSegLoc[i], VectCalc::dotProduct(this->grz.getPixSize(), dirvec));
+        snekSegs[i] = grz.getRectAt(snekSegLoc[i], 1);
+        std::cout<<snekSegLoc[i].x<<std::endl;
+    }
+    this->drawBody();
+}
+
 //=================================================================================
 
 void gameLoop(sf::RenderWindow* buff);
@@ -162,6 +173,7 @@ int main(int argc, char **argv) {
 void gameLoop(sf::RenderWindow* buff)
 {
     Grfx grx;
+    Snek snk(buff, {80,80});
     //std::cout<<VectCalc::translateVector({2,3},{4,1}).x; test code...
     while(buff->isOpen())
     {
@@ -172,7 +184,7 @@ void gameLoop(sf::RenderWindow* buff)
             if( evnts.type == sf::Event::Closed ) buff->close();
         }
         //buff->draw(grx.getRectAt({20,20}, 1)); test code
-        Snek snk(buff, {80,80});
+        snk.moveSnek({1,0});
         buff->display();
         //std::cout<<sf::err()<<std::endl;
     }
