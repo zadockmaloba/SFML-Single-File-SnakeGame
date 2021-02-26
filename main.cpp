@@ -68,6 +68,23 @@ private:
     void snakeOffMap();
 };
 
+class Food : public sf::RectangleShape
+{
+private:
+    sf::Color foodCol;
+    sf::Vector2f foodLoc;
+    sf::RenderWindow* xfnWin;
+    void drawFood();
+    
+public:
+    Food(sf::RenderWindow* fnWin, sf::Vector2f innitPos);
+    ~Food();
+    
+public:
+    void innitFood();
+    void nextFoodLoc();
+    sf::Vector2f currentFoodLoc();
+};
 
 //=================================================================================
 //class implementations go here...
@@ -118,7 +135,6 @@ Snek::Snek(sf::RenderWindow *snWin, sf::Vector2f innitLoc)
     :xsnWin(snWin),beginPos(innitLoc), segNum(18), gameTik(100)
 {
     this->innitSnek();
-    snclock.restart();
 }
 Snek::~Snek() //destructor of snek class
 {
@@ -149,7 +165,6 @@ void Snek::drawBody()
 
 void Snek::moveSnek(sf::Vector2f dirvec)
 {   
-    sf::Time snTime = snclock.getElapsedTime();
     this->gameTik += 1;
     
     if (gameTik % 320 == 0){
@@ -158,7 +173,6 @@ void Snek::moveSnek(sf::Vector2f dirvec)
     //         snekSegLoc[i] = VectCalc::translateVector(snekSegLoc[i], VectCalc::dotProduct({0.08,0.08}, dirvec)); //remember to replace with var
             snekSegLoc[i] = snekSegLoc[i-1];
             snekSegs[i] = grz.getRectAt(snekSegLoc[i], 1);
-            std::cout<<snekSegLoc[i].x<<std::endl;
             //sleep(0.001);
         }
         gameTik =100;
@@ -180,7 +194,7 @@ void Snek::snakeOffMap() //remember to replace consts with vars
     {
         snekSegLoc[0].x = 0;
     }
-    if(snekSegLoc[0].y < 0)//off to the left of screen
+    else if(snekSegLoc[0].y < 0)//off to the left of screen
     {
         snekSegLoc[0].y = 400;
     }
@@ -188,6 +202,37 @@ void Snek::snakeOffMap() //remember to replace consts with vars
     {
         snekSegLoc[0].y = 0;
     }
+}
+
+Food::Food(sf::RenderWindow* fnWin, sf::Vector2f innitPos) 
+: xfnWin(fnWin),foodLoc(innitPos)
+{
+    
+}
+
+Food::~Food() 
+{
+    
+}
+
+void Food::innitFood() 
+{
+    
+}
+
+void Food::nextFoodLoc() 
+{
+    
+}
+
+sf::Vector2f Food::currentFoodLoc() 
+{
+    return sf::Vector2f();
+}
+
+void Food::drawFood() 
+{
+    
 }
 
 //=================================================================================
@@ -218,8 +263,7 @@ void gameLoop(sf::RenderWindow* buff)
 
     while(buff->isOpen())
     {
-        sf::Time tvar = xclock.getElapsedTime();
-        std::cout<<"Time : "<<tvar.asSeconds();
+        
         sf::Event evnts;
         buff->clear();
         while(buff->pollEvent(evnts)) 
@@ -240,3 +284,4 @@ void gameLoop(sf::RenderWindow* buff)
         //xclock.restart();
     }
 }
+//for the love of science
