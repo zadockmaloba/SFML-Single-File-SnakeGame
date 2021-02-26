@@ -9,6 +9,8 @@
 #include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <time.h>
+#include <unistd.h>
 
 //declarations
 
@@ -43,10 +45,11 @@ class RandomEngine
 class Snek
 {
 private:
-    int segNum;
+    int segNum , gameTik;
     const bool snkHeadColor = true, snkBodyColor = false;
     sf::Vector2f beginPos;
     Grfx grz;
+    sf::Clock snclock;
     
 public://vars
     std::vector<sf::RectangleShape> snekSegs;
@@ -62,6 +65,7 @@ private:
     void innitSnek();
     void drawBody();
     void growSnek();
+    void snakeOffMap();
 };
 
 
@@ -111,9 +115,10 @@ sf::Vector2f Grfx::getPixSize()
 
 //constructor of snek class
 Snek::Snek(sf::RenderWindow *snWin, sf::Vector2f innitLoc) 
-    :xsnWin(snWin),beginPos(innitLoc), segNum(4)
+    :xsnWin(snWin),beginPos(innitLoc), segNum(18), gameTik(100)
 {
     this->innitSnek();
+    snclock.restart();
 }
 Snek::~Snek() //destructor of snek class
 {
@@ -143,14 +148,30 @@ void Snek::drawBody()
 }
 
 void Snek::moveSnek(sf::Vector2f dirvec)
-{
-    for(int i=0; i<snekSegLoc.size(); i++)
-    {
-        snekSegLoc[i] = VectCalc::translateVector(snekSegLoc[i], VectCalc::dotProduct(this->grz.getPixSize(), dirvec));
-        snekSegs[i] = grz.getRectAt(snekSegLoc[i], 1);
-        std::cout<<snekSegLoc[i].x<<std::endl;
+{   
+    sf::Time snTime = snclock.getElapsedTime();
+    this->gameTik += 2;
+    
+    if (gameTik % 100 == 0){
+        for(int i=snekSegLoc.size()-1; i>0; i--)
+        {
+    //         snekSegLoc[i] = VectCalc::translateVector(snekSegLoc[i], VectCalc::dotProduct({0.08,0.08}, dirvec)); //remember to replace with var
+            snekSegLoc[i] = snekSegLoc[i-1];
+            snekSegs[i] = grz.getRectAt(snekSegLoc[i], 1);
+            std::cout<<snekSegLoc[i].x<<std::endl;
+            //sleep(0.001);
+        }
+        gameTik =100;
     }
+    snekSegLoc[0] = VectCalc::translateVector(snekSegLoc[0], VectCalc::dotProduct({0.08,0.08}, dirvec));
+    snekSegs[0] = grz.getRectAt(snekSegLoc[0], 0);
     this->drawBody();
+    //snclock.restart();
+}
+
+void Snek::snakeOffMap()
+{
+    
 }
 
 //=================================================================================
@@ -174,18 +195,32 @@ void gameLoop(sf::RenderWindow* buff)
 {
     Grfx grx;
     Snek snk(buff, {80,80});
+    sf::Clock xclock;
     //std::cout<<VectCalc::translateVector({2,3},{4,1}).x; test code...
+    sf::Vector2f playerDir = {-1,0};
+    xclock.restart();
+
     while(buff->isOpen())
     {
+        sf::Time tvar = xclock.getElapsedTime();
+        std::cout<<"Time : "<<tvar.asSeconds();
         sf::Event evnts;
         buff->clear();
         while(buff->pollEvent(evnts)) 
         {
             if( evnts.type == sf::Event::Closed ) buff->close();
+            if( evnts.type==sf::Event::KeyPressed)
+            {
+                if(evnts.key.code == sf::Keyboard::Left) playerDir = {-1, 0};
+                else if(evnts.key.code == sf::Keyboard::Right) playerDir = {1, 0};
+                else if(evnts.key.code == sf::Keyboard::Up) playerDir = {0, -1};
+                else if(evnts.key.code == sf::Keyboard::Down) playerDir = {0, 1};
+            }
         }
-        //buff->draw(grx.getRectAt({20,20}, 1)); test code
-        snk.moveSnek({1,0});
+        //if (tvar.asMilliseconds() % 100 == 0){
+        snk.moveSnek(playerDir);
+        //}
         buff->display();
-        //std::cout<<sf::err()<<std::endl;
+        //xclock.restart();
     }
 }
