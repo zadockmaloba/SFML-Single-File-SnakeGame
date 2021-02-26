@@ -150,9 +150,9 @@ void Snek::drawBody()
 void Snek::moveSnek(sf::Vector2f dirvec)
 {   
     sf::Time snTime = snclock.getElapsedTime();
-    this->gameTik += 2;
+    this->gameTik += 1;
     
-    if (gameTik % 100 == 0){
+    if (gameTik % 320 == 0){
         for(int i=snekSegLoc.size()-1; i>0; i--)
         {
     //         snekSegLoc[i] = VectCalc::translateVector(snekSegLoc[i], VectCalc::dotProduct({0.08,0.08}, dirvec)); //remember to replace with var
@@ -163,15 +163,31 @@ void Snek::moveSnek(sf::Vector2f dirvec)
         }
         gameTik =100;
     }
-    snekSegLoc[0] = VectCalc::translateVector(snekSegLoc[0], VectCalc::dotProduct({0.08,0.08}, dirvec));
+    snekSegLoc[0] = VectCalc::translateVector(snekSegLoc[0], VectCalc::dotProduct({0.1,0.1}, dirvec));
     snekSegs[0] = grz.getRectAt(snekSegLoc[0], 0);
+    this->snakeOffMap();
     this->drawBody();
     //snclock.restart();
 }
 
-void Snek::snakeOffMap()
+void Snek::snakeOffMap() //remember to replace consts with vars
 {
-    
+    if(snekSegLoc[0].x < 0)//off to the left of screen
+    {
+        snekSegLoc[0].x = 400;
+    }
+    else if(snekSegLoc[0].x > 400)
+    {
+        snekSegLoc[0].x = 0;
+    }
+    if(snekSegLoc[0].y < 0)//off to the left of screen
+    {
+        snekSegLoc[0].y = 400;
+    }
+    else if(snekSegLoc[0].y > 400)
+    {
+        snekSegLoc[0].y = 0;
+    }
 }
 
 //=================================================================================
