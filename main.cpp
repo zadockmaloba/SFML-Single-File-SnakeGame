@@ -132,7 +132,7 @@ sf::Vector2f Grfx::getPixSize()
 
 //constructor of snek class
 Snek::Snek(sf::RenderWindow *snWin, sf::Vector2f innitLoc) 
-    :xsnWin(snWin),beginPos(innitLoc), segNum(18), gameTik(100)
+    :xsnWin(snWin),beginPos(innitLoc), segNum(4), gameTik(100)
 {
     this->innitSnek();
 }
@@ -271,10 +271,10 @@ void gameLoop(sf::RenderWindow* buff)
             if( evnts.type == sf::Event::Closed ) buff->close();
             if( evnts.type==sf::Event::KeyPressed)
             {
-                if(evnts.key.code == sf::Keyboard::Left) playerDir = {-1, 0};
-                else if(evnts.key.code == sf::Keyboard::Right) playerDir = {1, 0};
-                else if(evnts.key.code == sf::Keyboard::Up) playerDir = {0, -1};
-                else if(evnts.key.code == sf::Keyboard::Down) playerDir = {0, 1};
+                if(evnts.key.code == sf::Keyboard::Left && playerDir.x != 1 ) playerDir = {-1, 0};
+                else if(evnts.key.code == sf::Keyboard::Right && playerDir.x!=-1) playerDir = {1, 0};
+                else if(evnts.key.code == sf::Keyboard::Up && playerDir.y != 1) playerDir = {0, -1};
+                else if(evnts.key.code == sf::Keyboard::Down &&playerDir.y !=-1) playerDir = {0, 1};
             }
         }
         //if (tvar.asMilliseconds() % 100 == 0){
