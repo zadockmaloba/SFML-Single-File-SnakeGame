@@ -74,6 +74,7 @@ private:
     sf::Color foodCol;
     sf::Vector2f foodLoc;
     sf::RenderWindow* xfnWin;
+public:
     void drawFood();
     
 public:
@@ -207,7 +208,9 @@ void Snek::snakeOffMap() //remember to replace consts with vars
 Food::Food(sf::RenderWindow* fnWin, sf::Vector2f innitPos) 
 : xfnWin(fnWin),foodLoc(innitPos)
 {
-    
+    this->setFillColor(sf::Color::Red);
+    this->setSize({10,10});
+    this->setPosition(foodLoc);
 }
 
 Food::~Food() 
@@ -227,12 +230,12 @@ void Food::nextFoodLoc()
 
 sf::Vector2f Food::currentFoodLoc() 
 {
-    return sf::Vector2f();
+    return this->foodLoc;
 }
 
 void Food::drawFood() 
 {
-    
+    this->xfnWin->draw(*this);
 }
 
 //=================================================================================
@@ -256,6 +259,7 @@ void gameLoop(sf::RenderWindow* buff)
 {
     Grfx grx;
     Snek snk(buff, {80,80});
+    Food xfd(buff, {100,100});
     sf::Clock xclock;
     //std::cout<<VectCalc::translateVector({2,3},{4,1}).x; test code...
     sf::Vector2f playerDir = {-1,0};
@@ -279,6 +283,7 @@ void gameLoop(sf::RenderWindow* buff)
         }
         //if (tvar.asMilliseconds() % 100 == 0){
         snk.moveSnek(playerDir);
+        xfd.drawFood();
         //}
         buff->display();
         //xclock.restart();
