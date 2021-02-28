@@ -22,6 +22,11 @@ struct VectCalc //a container to hold vector calculation functions
     static sf::Vector2f scalarProduct(sf::Vector2f a, int scal);
 };
 
+struct CollisionPhx //computations for collision detection
+{
+    static bool rectCollision(sf::RectangleShape* rA, sf::RectangleShape* rB);
+};
+
 class Grfx
 {
 private:
@@ -59,6 +64,7 @@ public:// functions
     Snek(sf::RenderWindow *snWin, sf::Vector2f innitLoc);
     ~Snek();
     void moveSnek(sf::Vector2f dirvec);
+    sf::RectangleShape* ptrSnkHead();
     
 private:
     sf::RenderWindow* xsnWin;
@@ -108,6 +114,11 @@ sf::Vector2f VectCalc::scalarProduct(sf::Vector2f a, int scal)
 {
     a = {a.x * scal, a.y * scal};
     return a;
+}
+
+bool CollisionPhx::rectCollision(sf::RectangleShape* rA, sf::RectangleShape* rB) //implement collisin detection here
+{
+    return true;
 }
 
 Grfx::Grfx() : pixSize({20,20})
@@ -183,6 +194,11 @@ void Snek::moveSnek(sf::Vector2f dirvec)
     this->snakeOffMap();
     this->drawBody();
     //snclock.restart();
+}
+
+sf::RectangleShape* Snek::ptrSnkHead() 
+{
+    return &snekSegs[0];
 }
 
 void Snek::snakeOffMap() //remember to replace consts with vars
