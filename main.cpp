@@ -8,9 +8,12 @@
 
 #include <iostream>
 #include <vector>
-#include <SFML/Graphics.hpp>
 #include <time.h>
 #include <unistd.h>
+#include <math.h>
+#include <random>
+#include <SFML/Graphics.hpp>
+
 
 //declarations
 
@@ -118,7 +121,19 @@ sf::Vector2f VectCalc::scalarProduct(sf::Vector2f a, int scal)
 
 bool CollisionPhx::rectCollision(sf::RectangleShape* rA, sf::RectangleShape* rB) //implement collisin detection here
 {
-    return true;
+    sf::Vector2f raPos = rA->getPosition(), rbPos = rB->getPosition();
+    if((std::abs(rbPos.x - raPos.x) < 10) && std::abs(raPos.y - rbPos.y) < 10)
+    {
+        std::cout<<"Collision X-axis ID :: "<<rand()<<std::endl;
+        return true;
+    }
+    else if((std::abs(rbPos.y - raPos.y) < 10) && std::abs(raPos.x - rbPos.x) < 10)
+    {
+        std::cout<<"Collision Y-axis ID :: "<<rand()<<std::endl;
+        return true;
+    }
+    
+    return false;
 }
 
 Grfx::Grfx() : pixSize({20,20})
@@ -300,6 +315,7 @@ void gameLoop(sf::RenderWindow* buff)
         //if (tvar.asMilliseconds() % 100 == 0){
         snk.moveSnek(playerDir);
         xfd.drawFood();
+        CollisionPhx::rectCollision(&xfd, snk.ptrSnkHead());
         //}
         buff->display();
         //xclock.restart();

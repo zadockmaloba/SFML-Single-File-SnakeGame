@@ -11,10 +11,14 @@ iostream
 -
 vector
 -
-SFML/Graphics.hpp
--
 time.h
 -
 unistd.h
+-
+math.h
+-
+random
+-
+SFML/Graphics.hpp
 -
 
