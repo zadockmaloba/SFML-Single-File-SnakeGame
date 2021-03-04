@@ -49,7 +49,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : " "
+					"fragment" : "-O3 -DNDEBUG  "
 				}
 			],
 			"language" : "CXX",
@@ -78,6 +78,10 @@
 	{
 		"commandFragments" : 
 		[
+			{
+				"fragment" : "-O3 -DNDEBUG",
+				"role" : "flags"
+			},
 			{
 				"fragment" : "-rdynamic",
 				"role" : "flags"

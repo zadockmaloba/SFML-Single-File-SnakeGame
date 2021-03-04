@@ -19,7 +19,7 @@
 					]
 				}
 			],
-			"name" : "",
+			"name" : "Release",
 			"projects" : 
 			[
 				{
@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "gtk_test1::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-gtk_test1-44763b50c98670043e90.json",
+					"jsonFile" : "target-gtk_test1-Release-699b49ce35d3eff027ff.json",
 					"name" : "gtk_test1",
 					"projectIndex" : 0
 				}

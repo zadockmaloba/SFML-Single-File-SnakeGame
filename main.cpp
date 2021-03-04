@@ -1,3 +1,6 @@
+#ifndef __MAIN_H__
+#define __MAIN_H__
+
 /*
  * ====================================
  * = A Simple SFML snake game
@@ -68,12 +71,12 @@ public:// functions
     ~Snek();
     void moveSnek(sf::Vector2f dirvec);
     sf::RectangleShape* ptrSnkHead();
+    void growSnek();
     
 private:
     sf::RenderWindow* xsnWin;
     void innitSnek();
     void drawBody();
-    void growSnek();
     void snakeOffMap();
 };
 
@@ -190,6 +193,13 @@ void Snek::drawBody()
     }
 }
 
+void Snek::growSnek() 
+{
+    segNum += 1;
+    snekSegLoc.push_back(VectCalc::translateVector(snekSegLoc[segNum-1], {20,20}));
+    snekSegs.push_back(grz.getRectAt(snekSegLoc[segNum-1], snkBodyColor) );
+}
+
 void Snek::moveSnek(sf::Vector2f dirvec)
 {   
     this->gameTik += 1;
@@ -271,7 +281,7 @@ void Food::drawFood()
 
 //=================================================================================
 
-void gameLoop(sf::RenderWindow* buff);
+static void gameLoop(sf::RenderWindow* buff);
 
 //implementations
 
@@ -315,10 +325,16 @@ void gameLoop(sf::RenderWindow* buff)
         //if (tvar.asMilliseconds() % 100 == 0){
         snk.moveSnek(playerDir);
         xfd.drawFood();
-        CollisionPhx::rectCollision(&xfd, snk.ptrSnkHead());
+        if(CollisionPhx::rectCollision(&xfd, snk.ptrSnkHead()))
+        {
+            xfd.nextFoodLoc();
+            snk.growSnek();
+        }
         //}
         buff->display();
         //xclock.restart();
     }
 }
 //for the love of science
+
+#endif // __MAIN_H__
