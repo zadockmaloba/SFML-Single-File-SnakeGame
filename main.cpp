@@ -47,13 +47,20 @@ public:// functions
     sf::Vector2f getPixSize();
 };
 
-class RandomEngine
+class RandomEngine // A class to generate random numbers
 {
+private:
+    std::default_random_engine genrtr;
+    std::uniform_int_distribution<int> distrbtn;
+public:
     RandomEngine();
     ~RandomEngine();
+public:
+    int intGenerator(int floor, int ceiling);
+
 };
 
-class Snek
+class Snek // The snake class
 {
 private:
     int segNum , gameTik;
@@ -86,6 +93,8 @@ private:
     sf::Color foodCol;
     sf::Vector2f foodLoc;
     sf::RenderWindow* xfnWin;
+    RandomEngine ranEng;
+    
 public:
     void drawFood();
     
@@ -158,6 +167,24 @@ sf::RectangleShape Grfx::getRectAt(sf::Vector2f Loc, bool snColor)
 sf::Vector2f Grfx::getPixSize()
 {
     return pixSize;
+}
+
+// Random engine class implementation
+
+RandomEngine::RandomEngine() 
+{
+    
+}
+
+RandomEngine::~RandomEngine() 
+{
+    
+}
+
+int RandomEngine::intGenerator(int floor, int ceiling) 
+{
+    std::uniform_int_distribution<int> xdstr(floor, ceiling);
+    return xdstr(this->genrtr);
 }
 
 //constructor of snek class
@@ -246,6 +273,8 @@ void Snek::snakeOffMap() //remember to replace consts with vars
     }
 }
 
+//Impelementation of the food class
+
 Food::Food(sf::RenderWindow* fnWin, sf::Vector2f innitPos) 
 : xfnWin(fnWin),foodLoc(innitPos)
 {
@@ -254,7 +283,7 @@ Food::Food(sf::RenderWindow* fnWin, sf::Vector2f innitPos)
     this->setPosition(foodLoc);
 }
 
-Food::~Food() 
+Food::~Food()  
 {
     
 }
@@ -264,9 +293,10 @@ void Food::innitFood()
     
 }
 
-void Food::nextFoodLoc() 
+void Food::nextFoodLoc() // New food location when snake eats food
 {
-    
+    foodLoc = {ranEng.intGenerator(0,400), ranEng.intGenerator(0,400)};
+    this->setPosition(foodLoc);
 }
 
 sf::Vector2f Food::currentFoodLoc() 
