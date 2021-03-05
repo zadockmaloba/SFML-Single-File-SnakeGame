@@ -187,6 +187,7 @@ sf::Vector2f Grfx::getPixSize()
 
 void ScoreBoard::counter() 
 {
+    txtBuffer.str("");
     txtBuffer.clear();
     points += 1;
     txtBuffer << points;
