@@ -10,6 +10,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <time.h>
 #include <unistd.h>
@@ -46,6 +47,21 @@ public:// functions
     sf::RectangleShape getRectAt(sf::Vector2f Loc, bool snColor);
     sf::Vector2f getPixSize();
 };
+
+class ScoreBoard : public sf::Text
+{
+private:
+    sf::RenderWindow* scWin;
+    sf::Font fnt;
+    int points;
+    std::ostringstream txtBuffer;
+public:
+    void counter();
+public:
+    ScoreBoard();
+    ~ScoreBoard();
+};
+
 
 class RandomEngine // A class to generate random numbers
 {
@@ -136,12 +152,12 @@ bool CollisionPhx::rectCollision(sf::RectangleShape* rA, sf::RectangleShape* rB)
     sf::Vector2f raPos = rA->getPosition(), rbPos = rB->getPosition();
     if((std::abs(rbPos.x - raPos.x) < 10) && std::abs(raPos.y - rbPos.y) < 10)
     {
-        std::cout<<"Collision X-axis ID :: "<<rand()<<std::endl;
+        //std::cout<<"Collision X-axis ID :: "<<rand()<<std::endl; //debug code
         return true;
     }
     else if((std::abs(rbPos.y - raPos.y) < 10) && std::abs(raPos.x - rbPos.x) < 10)
     {
-        std::cout<<"Collision Y-axis ID :: "<<rand()<<std::endl;
+        //std::cout<<"Collision Y-axis ID :: "<<rand()<<std::endl; //debug code
         return true;
     }
     
@@ -167,6 +183,36 @@ sf::RectangleShape Grfx::getRectAt(sf::Vector2f Loc, bool snColor)
 sf::Vector2f Grfx::getPixSize()
 {
     return pixSize;
+}
+
+void ScoreBoard::counter() 
+{
+    txtBuffer.clear();
+    points += 1;
+    txtBuffer << points;
+    this->setString(txtBuffer.str());
+}
+
+//implementation of scoreboard class
+
+ScoreBoard::ScoreBoard() 
+: points(0)
+{
+    if(!fnt.loadFromFile("Fonts/Font1.ttf"))
+    {
+        std::cout<<"Error Loading FIle !!! \n";
+    }
+    this->setFont(fnt);
+    this->txtBuffer << points;
+    this->setPosition({20,350});
+    this->setFillColor(sf::Color::White);
+    this->setStyle(sf::Text::Style::Bold);
+    this->setString(txtBuffer.str());
+}
+
+ScoreBoard::~ScoreBoard() 
+{
+    
 }
 
 // Random engine class implementation
@@ -331,8 +377,11 @@ void gameLoop(sf::RenderWindow* buff)
     Grfx grx;
     Snek snk(buff, {80,80});
     Food xfd(buff, {100,100});
+    ScoreBoard scb;
     sf::Clock xclock;
+
     //std::cout<<VectCalc::translateVector({2,3},{4,1}).x; test code...
+
     sf::Vector2f playerDir = {-1,0};
     xclock.restart();
 
@@ -355,10 +404,12 @@ void gameLoop(sf::RenderWindow* buff)
         //if (tvar.asMilliseconds() % 100 == 0){
         snk.moveSnek(playerDir);
         xfd.drawFood();
+        buff->draw(scb);
         if(CollisionPhx::rectCollision(&xfd, snk.ptrSnkHead()))
         {
             xfd.nextFoodLoc();
             snk.growSnek();
+            scb.counter();
         }
         //}
         buff->display();

@@ -9,6 +9,8 @@
 /home/zadock/projects/Gtk_test1/main.cpp
 iostream
 -
+sstream
+-
 vector
 -
 time.h
