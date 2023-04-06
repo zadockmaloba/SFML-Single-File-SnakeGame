@@ -1,6 +1,3 @@
-#ifndef __MAIN_H__
-#define __MAIN_H__
-
 /*
  * ====================================
  * = A Simple SFML snake game
@@ -417,6 +414,3 @@ void gameLoop(sf::RenderWindow* buff)
         //xclock.restart();
     }
 }
-//for the love of science
-
-#endif // __MAIN_H__
